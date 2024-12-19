@@ -1,0 +1,95 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-face-aframe.prod.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+	const list = ["glasses1", "glasses2", "hat1", "hat2",];
+	const visibles = [false, false, false, false,];
+	const setVisible = (button, entities, visible) => {
+	  if (visible) {
+	    button.classList.add("selected");
+	  } else {
+	    button.classList.remove("selected");
+	  }
+	  entities.forEach((entity) => {
+	    entity.setAttribute("visible", visible);
+	  });
+	}
+	list.forEach((item, index) => {
+	  const button = document.querySelector("#" + item);
+	  const entities = document.querySelectorAll("." + item + "-entity");
+	  setVisible(button, entities, visibles[index]);
+	  button.addEventListener('click', () => {
+	    visibles[index] = !visibles[index];
+	    setVisible(button, entities, visibles[index]);
+	  });
+	});
+      })
+    </script>
+    <style>
+      body {
+        margin: 0;
+      }
+      .example-container {
+        overflow: hidden;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+      }
+      .options-panel {
+	position: fixed;
+	left: 0;
+	top: 0;
+	z-index: 2;
+      }
+      .options-panel img {
+	border: solid 2px;
+	width: 50px;
+	height: 50px;
+	object-fit: cover;
+	cursor: pointer;
+      }
+      .options-panel img.selected {
+	border-color: rgb(0, 45, 128);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="example-container">
+      <div class="options-panel">
+	<img id="hat1" src="https://cdn.jsdelivr.net/gh/y4n1z3/mis-modelos-ar@main/jaguar.png"/>
+	<img id="hat2" src="https://cdn.jsdelivr.net/gh/y4n1z3/mis-modelos-ar@main/horse.png"/>
+	<img id="glasses1" src="https://cdn.jsdelivr.net/gh/y4n1z3/mis-modelos-ar@main/deer.png"/>
+	<img id="glasses2" src="https://cdn.jsdelivr.net/gh/y4n1z3/mis-modelos-ar@main/mask.png"/>
+      </div>
+      <a-scene mindar-face embedded color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+        <a-assets>
+            <a-asset-item id="headModel" src="https://cdn.jsdelivr.net/gh/aframevr/aframe/examples/marker-training/assets/robot/robot.glb"></a-asset-item>
+            <a-asset-item id="glassesModel" src="https://cdn.jsdelivr.net/gh/y4n1z3/mis-modelos-ar@main/beer.glb"></a-asset-item>
+            <a-asset-item id="glassesModel2" src="https://cdn.jsdelivr.net/gh/y4n1z3/mis-modelos-ar@main/mascara.glb"></a-asset-item>
+            <a-asset-item id="hatModel" src="https://cdn.jsdelivr.net/gh/y4n1z3/mis-modelos-ar@main/jaguar.glb"></a-asset-item>
+            <a-asset-item id="hatModel2" src="https://cdn.jsdelivr.net/gh/y4n1z3/mis-modelos-ar@main/caballo.glb"></a-asset-item>
+        </a-assets>
+        <a-camera active="false" position="0 0 0"></a-camera>
+	<!-- head occluder -->
+        <a-entity mindar-face-target="anchorIndex: 168">
+	  <a-gltf-model mindar-face-occluder position="0 -0.3 0.15"rotation="0 0 0" scale="2 2 2" src="#headModel"></a-gltf-model>
+        </a-entity>
+        <a-entity mindar-face-target="anchorIndex: 10">
+	  <a-gltf-model rotation="0 0 0" position="0 -1 0" scale="1 1 1" src="#hatModel" class="hat1-entity" visible="false"></a-gltf-model>
+        </a-entity>
+        <a-entity mindar-face-target="anchorIndex: 10">
+	  <a-gltf-model rrotation="0 0 0" position="0 -1 0" scale="0.2 0.2 0.2" src="#hatModel2" class="hat2-entity" visible="false"></a-gltf-model>
+        </a-entity>
+        <a-entity mindar-face-target="anchorIndex: 168">
+	  <a-gltf-model rotation="0 0 0" position="0 -0.5 0" scale="5 5 5" src="#glassesModel" class="glasses1-entity" visible="false"></a-gltf-model>
+        </a-entity>
+        <a-entity mindar-face-target="anchorIndex: 168">
+	  <a-gltf-model rotation="0 0 0" position="0 -1 0" scale="0.1 0.1 0.1" src="#glassesModel2" class="glasses2-entity" visible="false"></a-gltf-model>
+        </a-entity>
+      </a-scene>
+    </div>
+  </body>
+</html>
