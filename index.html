@@ -4,45 +4,44 @@
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-face-aframe.prod.js"></script>
     <script>
-     document.addEventListener("DOMContentLoaded", function () {
-  const list = ["glasses1", "glasses2", "hat1", "hat2"];
-  const visibles = [false, false, false, false];
-  const setVisible = (button, entities, visible) => {
-    if (visible) {
-      button.classList.add("selected");
-    } else {
-      button.classList.remove("selected");
-    }
-    entities.forEach((entity) => {
-      entity.setAttribute("visible", visible);
-    });
-  };
+      document.addEventListener("DOMContentLoaded", function () {
+        const list = ["glasses1", "glasses2", "hat1", "hat2", "mask1", "mask2", "mask3"];
+        const visibles = [false, false, false, false, false, false, false];
+        const setVisible = (button, entities, visible) => {
+          if (visible) {
+            button.classList.add("selected");
+          } else {
+            button.classList.remove("selected");
+          }
+          entities.forEach((entity) => {
+            entity.setAttribute("visible", visible);
+          });
+        };
 
-  list.forEach((item, index) => {
-    const button = document.querySelector("#" + item);
-    const entities = document.querySelectorAll("." + item + "-entity");
+        list.forEach((item, index) => {
+          const button = document.querySelector("#" + item);
+          const entities = document.querySelectorAll("." + item + "-entity");
 
-    // Inicializar el estado de visibilidad
-    setVisible(button, entities, visibles[index]);
+          // Inicializar el estado de visibilidad
+          setVisible(button, entities, visibles[index]);
 
-    button.addEventListener("click", () => {
-      // Desactivar todos los botones y entidades
-      list.forEach((otherItem, otherIndex) => {
-        if (otherIndex !== index) {
-          const otherButton = document.querySelector("#" + otherItem);
-          const otherEntities = document.querySelectorAll("." + otherItem + "-entity");
-          visibles[otherIndex] = false; // Desactivar otros botones
-          setVisible(otherButton, otherEntities, false);
-        }
+          button.addEventListener("click", () => {
+            // Desactivar todos los botones y entidades
+            list.forEach((otherItem, otherIndex) => {
+              if (otherIndex !== index) {
+                const otherButton = document.querySelector("#" + otherItem);
+                const otherEntities = document.querySelectorAll("." + otherItem + "-entity");
+                visibles[otherIndex] = false; // Desactivar otros botones
+                setVisible(otherButton, otherEntities, false);
+              }
+            });
+
+            // Alternar visibilidad del botón y entidades actuales
+            visibles[index] = !visibles[index];
+            setVisible(button, entities, visibles[index]);
+          });
+        });
       });
-
-      // Alternar visibilidad del botón y entidades actuales
-      visibles[index] = !visibles[index];
-      setVisible(button, entities, visibles[index]);
-    });
-  });
-});
-
     </script>
     <style>
       body {
@@ -55,57 +54,72 @@
         height: 100%;
       }
       .options-panel {
-	position: fixed;
-	left: 0;
-	top: 0;
-	z-index: 2;
+        position: fixed;
+        left: 0;
+        top: 0;
+        z-index: 2;
       }
       .options-panel img {
-	border: solid 2px;
-	width: 50px;
-	height: 50px;
-	object-fit: cover;
-	cursor: pointer;
+        border: solid 2px;
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        cursor: pointer;
       }
       .options-panel img.selected {
-	border-color: rgb(0, 45, 128);
+        border-color: rgb(0, 45, 128);
       }
     </style>
   </head>
   <body>
     <div class="example-container">
       <div class="options-panel">
-	<img id="hat1" src="https://cdn.jsdelivr.net/gh/y4n1z3/mis-modelos-ar@main/jaguar.png"/>
-	<img id="hat2" src="https://cdn.jsdelivr.net/gh/y4n1z3/mis-modelos-ar@main/horse.png"/>
-	<img id="glasses1" src="https://cdn.jsdelivr.net/gh/y4n1z3/mis-modelos-ar@main/deer.png"/>
-	<img id="glasses2" src="https://cdn.jsdelivr.net/gh/y4n1z3/mis-modelos-ar@main/mask.png"/>
+        <img id="hat1" src="https://cdn.jsdelivr.net/gh/y4n1z3/mis-modelos-ar@main/mono.png"/>
+        <img id="hat2" src="https://cdn.jsdelivr.net/gh/y4n1z3/mis-modelos-ar@main/caballomask.png"/>
+        <img id="glasses1" src="https://cdn.jsdelivr.net/gh/y4n1z3/mis-modelos-ar@main/senor2.png"/>
+        <img id="glasses2" src="https://cdn.jsdelivr.net/gh/y4n1z3/mis-modelos-ar@main/perronegro.png"/>
+        <img id="mask1" src="https://cdn.jsdelivr.net/gh/y4n1z3/mis-modelos-ar@main/perroblanco.png"/>
+        <img id="mask2" src="https://cdn.jsdelivr.net/gh/y4n1z3/mis-modelos-ar@main/muerto.png"/>
+        <img id="mask3" src="https://cdn.jsdelivr.net/gh/y4n1z3/mis-modelos-ar@main/senor1.png"/>
       </div>
       <a-scene mindar-face embedded color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
         <a-assets>
-            <a-asset-item id="headModel" src="https://cdn.jsdelivr.net/gh/aframevr/aframe/examples/marker-training/assets/robot/robot.glb"></a-asset-item>
-            <a-asset-item id="glassesModel" src="https://cdn.jsdelivr.net/gh/y4n1z3/mis-modelos-ar@main/beer.glb"></a-asset-item>
-            <a-asset-item id="glassesModel2" src="https://cdn.jsdelivr.net/gh/y4n1z3/mis-modelos-ar@main/mascara.glb"></a-asset-item>
-            <a-asset-item id="hatModel" src="https://cdn.jsdelivr.net/gh/y4n1z3/mis-modelos-ar@main/jaguar.glb"></a-asset-item>
-            <a-asset-item id="hatModel2" src="https://cdn.jsdelivr.net/gh/y4n1z3/mis-modelos-ar@main/caballo.glb"></a-asset-item>
+          <a-asset-item id="headModel" src="https://cdn.jsdelivr.net/gh/aframevr/aframe/examples/marker-training/assets/robot/robot.glb"></a-asset-item>
+          <a-asset-item id="glassesModel" src="https://cdn.jsdelivr.net/gh/y4n1z3/mis-modelos-ar@main/viejorubio.glb"></a-asset-item>
+          <a-asset-item id="glassesModel2" src="https://cdn.jsdelivr.net/gh/y4n1z3/mis-modelos-ar@main/perronegro.glb"></a-asset-item>
+          <a-asset-item id="hatModel" src="https://cdn.jsdelivr.net/gh/y4n1z3/mis-modelos-ar@main/mono.glb"></a-asset-item>
+          <a-asset-item id="hatModel2" src="https://cdn.jsdelivr.net/gh/y4n1z3/mis-modelos-ar@main/caballomask.glb"></a-asset-item>
+          <a-asset-item id="maskModel1" src="https://cdn.jsdelivr.net/gh/y4n1z3/mis-modelos-ar@main/perroblanco.glb"></a-asset-item>
+          <a-asset-item id="maskModel2" src="https://cdn.jsdelivr.net/gh/y4n1z3/mis-modelos-ar@main/muerto.glb"></a-asset-item>
+          <a-asset-item id="maskModel3" src="https://cdn.jsdelivr.net/gh/y4n1z3/mis-modelos-ar@main/viejoazul.glb"></a-asset-item>
         </a-assets>
         <a-camera active="false" position="0 0 0"></a-camera>
-	<!-- head occluder -->
         <a-entity mindar-face-target="anchorIndex: 168">
-	  <a-gltf-model mindar-face-occluder position="0 -0.3 0.15"rotation="0 0 0" scale="2 2 2" src="#headModel"></a-gltf-model>
+          <a-gltf-model mindar-face-occluder position="0 -0.3 0.15" rotation="0 0 0" scale="2 2 2" src="#headModel"></a-gltf-model>
         </a-entity>
         <a-entity mindar-face-target="anchorIndex: 10">
-	  <a-gltf-model rotation="0 0 0" position="0 -1 0" scale="1 1 1" src="#hatModel" class="hat1-entity" visible="false"></a-gltf-model>
+          <a-gltf-model rotation="0 0 0" position="0 -1 0" scale="1.2 1.2 1.2" src="#hatModel" class="hat1-entity" visible="false"></a-gltf-model>
         </a-entity>
         <a-entity mindar-face-target="anchorIndex: 10">
-	  <a-gltf-model rrotation="0 0 0" position="0 -1 0" scale="0.2 0.2 0.2" src="#hatModel2" class="hat2-entity" visible="false"></a-gltf-model>
+          <a-gltf-model rotation="0 0 0" position="0 -0.5 0" scale="1.4 1.6 1.4" src="#hatModel2" class="hat2-entity" visible="false"></a-gltf-model>
         </a-entity>
         <a-entity mindar-face-target="anchorIndex: 168">
-	  <a-gltf-model rotation="0 0 0" position="0 -0.5 0" scale="5 5 5" src="#glassesModel" class="glasses1-entity" visible="false"></a-gltf-model>
+          <a-gltf-model rotation="0 0 0" position="0 0 0" scale="0.8 0.8 0.8" src="#glassesModel" class="glasses1-entity" visible="false"></a-gltf-model>
         </a-entity>
         <a-entity mindar-face-target="anchorIndex: 168">
-	  <a-gltf-model rotation="0 0 0" position="0 -1 0" scale="0.1 0.1 0.1" src="#glassesModel2" class="glasses2-entity" visible="false"></a-gltf-model>
+          <a-gltf-model rotation="0 0 0" position="0 0 0" scale="1.3 1.3 1.3" src="#glassesModel2" class="glasses2-entity" visible="false"></a-gltf-model>
+        </a-entity>
+        <a-entity mindar-face-target="anchorIndex: 168">
+          <a-gltf-model rotation="0 0 0" position="0 0 0" scale="1.3 1.3 1.3" src="#maskModel1" class="mask1-entity" visible="false"></a-gltf-model>
+        </a-entity>
+        <a-entity mindar-face-target="anchorIndex: 168">
+          <a-gltf-model rotation="0 0 0" position="0 -0.2 0" scale="0.8 0.8 0.8" src="#maskModel2" class="mask2-entity" visible="false"></a-gltf-model>
+        </a-entity>
+        <a-entity mindar-face-target="anchorIndex: 168">
+          <a-gltf-model rotation="0 0 0" position="0 -0.2 0" scale="0.8 0.8 0.8" src="#maskModel3" class="mask3-entity" visible="false"></a-gltf-model>
         </a-entity>
       </a-scene>
     </div>
   </body>
 </html>
+
